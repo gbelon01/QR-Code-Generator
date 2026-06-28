@@ -1,11 +1,12 @@
 #include "QRC.hpp"
 
 int main(){
+    initTables();
     string stringEncript;
     vector<char> stringsChars;
     
     cout << "String to QR Code:\n";
-    cin >> stringEncript;
+    getline(cin, stringEncript);
     EccLevel level = askLevel();
     
 
@@ -19,9 +20,15 @@ int main(){
     cout << "Chosen version number: " << version << "\n";
 
     vector<int> encriptedInts = assembleStream(mode, stringEncript, charTable, level, version);
+    cout << "Codewords:\n";
     for(int i = 0; i < static_cast<int>(encriptedInts.size()); i++){
         cout << encriptedInts[i] << " ";
     }
+    cout << "\n";
 
-
+    vector<int> eccs = getEcc(encriptedInts, version, level);
+    cout << "ECC:\n";
+    for(size_t j = 0; j < eccs.size(); j++){
+        cout << eccs[j] << " ";
+    }
 }
